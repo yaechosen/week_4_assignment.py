@@ -10,3 +10,5 @@ with open("password.txt", "r") as file:
         if hashed_word == target_hash:
             print(word)
             break
+            print("Done checking")
+        
