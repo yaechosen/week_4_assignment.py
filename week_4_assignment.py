@@ -1,14 +1,27 @@
 import hashlib
+import argparse
 
-target_hash = "5e737f891db1175442a39fde73e51d781a545506d71c95477a6deb5988bd7f9a"
-with open("password.txt", "r") as file:
-    for line in file:
-        word = line.strip()
+parser = argparse.ArgumentParser(description="SHA256 Password Cracker")
 
-        hashed_word = hashlib.sha256(word.encode()).hexdigest()
+parser.add_argument("filename", help="File containing password list")
+parser.add_argument("hash", help="SHA256 hash to crack")
 
-        if hashed_word == target_hash:
-            print(word)
-            break
-            print("Done checking")
-        
+args = parser.parse_args()
+
+target_hash = args.hash
+filename = args.filename
+
+try:
+    with open(filename, "r") as file:
+        for line in file:
+            word = line.strip()
+            hashed_word = hashlib.sha256(word.encode()).hexdigest()
+
+            if hashed_word == target_hash:
+                print(word)
+                break
+        else:
+            print("Password not found.")
+
+except FileNotFoundError:
+    print("File not found.")
